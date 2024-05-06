@@ -1,9 +1,15 @@
 import { VStack, Button, Image, Text } from "@chakra-ui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useState } from "react";
 
 const Wallets = () => {
   const { select, wallets, publicKey, disconnect } = useWallet();
-
+  const [walletName, setWalletName] = useState('')
+  const selectWallet = (value) => {
+    console.log(value)
+    setWalletName(value)
+    select(value)
+  }
   return !publicKey ? (
     <VStack gap={4}>
       {wallets.filter((wallet) => wallet.readyState === "Installed").length >
@@ -13,7 +19,7 @@ const Wallets = () => {
           .map((wallet) => (
             <Button
               key={wallet.adapter.name}
-              onClick={() => select(wallet.adapter.name)}
+              onClick={() => selectWallet(wallet.adapter.name)}
               w="64"
               size="lg"
               fontSize="md"
@@ -35,6 +41,7 @@ const Wallets = () => {
     </VStack>
   ) : (
     <VStack gap={4}>
+      <Text>{walletName} Wallet Connected</Text>
       <Text>{publicKey.toBase58()}</Text>
       <Button onClick={disconnect}>disconnect wallet</Button>
     </VStack>
