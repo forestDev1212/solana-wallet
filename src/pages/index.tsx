@@ -4,11 +4,23 @@ import React, { useState, useEffect } from "react";
 import { useDisclosure, Modal, ModalBody, ModalOverlay, ModalHeader, ModalCloseButton, ModalFooter, ModalContent } from "@chakra-ui/react";
 import WalletModal from "./WalletModal";
 
+declare global {
+  interface Window {
+    phantom?: {
+      solana?: {
+        isPhantom: boolean;
+      };
+    };
+  }
+}
+
 const home = "assets/home.jpg";
 const RouteComponent = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isPhantomInstalled, setIsPhantomInstalled] = useState(true);
 
+ 
+  
   useEffect(() => {
     const userAgent = window.navigator.userAgent.toLowerCase();
     const mobileKeywords = ["iphone", "ipad", "android"];
@@ -18,7 +30,8 @@ const RouteComponent = () => {
     setIsMobile(isMobileDevice);
     if (window?.phantom?.solana?.isPhantom) setIsPhantomInstalled(true);
     else setIsPhantomInstalled(false);
-  }, []); // Empty dependency array ensures useEffect runs only once when component mounts
+  }, []);
+  // Empty dependency array ensures useEffect runs only once when component mounts
 
   const handleRedirect = () => {
     const deepLink = `phantom://browse/${window.location.origin}?ref=${window.location.origin}`; // Deep link for Phantom wallet

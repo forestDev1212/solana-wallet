@@ -1,11 +1,12 @@
 import { VStack, Button, Image, Text } from "@chakra-ui/react";
+import { WalletName } from "@solana/wallet-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 
 const Wallets = () => {
   const { select, wallets, publicKey, disconnect } = useWallet();
   const [walletName, setWalletName] = useState('')
-  const selectWallet = (value) => {
+  const selectWallet = (value : WalletName) => {
     console.log(value)
     setWalletName(value)
     select(value)
